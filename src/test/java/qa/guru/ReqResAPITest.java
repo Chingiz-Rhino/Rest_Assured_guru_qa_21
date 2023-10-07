@@ -93,6 +93,65 @@ public class ReqResAPITest {
 
     }
 
+    @Test
+    void singleResource() {
+
+        given()
+                .log().uri()
+                .log().method()
+                .log().body()
+                .when()
+                .get("https://reqres.in/api/unknown/2")
+                .then()
+                .log().status()
+                .log().body()
+                .statusCode(200)
+                .body("data.name", is("fuchsia rose"))
+                .body("data.year", is(2001));
+
+    }
+    @Test
+    void singleResourceNotFound() {
+
+        given()
+                .log().uri()
+                .log().method()
+                .log().body()
+                .when()
+                .get("https://reqres.in/api/unknown/23")
+                .then()
+                .log().status()
+                .log().body()
+                .statusCode(404);
+
+
+    }
+    @Test
+    void userUpdate() {
+        String createdUser = "{\n" +
+                "    \"name\": \"Ezio Auditore\",\n" +
+                "    \"job\": \"Assassin\"\n" +
+                "}";
+
+        given()
+                .log().uri()
+                .log().method()
+                .log().body()
+                .contentType(JSON)
+                .body(createdUser)
+                .when()
+                .put("https://reqres.in/api/users/2")
+                .then()
+                .log().status()
+                .log().body()
+                .statusCode(200)
+                .body("name", is("Ezio Auditore"))
+                .body("job", is("Assassin"))
+                .body("updatedAt", notNullValue());
+    }
+
+
+
 
 
 
