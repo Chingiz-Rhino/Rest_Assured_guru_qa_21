@@ -1,15 +1,18 @@
 package qa.guru;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import qa.guru.base.TestBase;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
-public class ReqResAPITest {
+public class ReqResAPITest extends TestBase {
 
     @Test
+    @DisplayName("")
     void successfulAuth() {
         String authData = "{ \"email\" :  \"eve.holt@reqres.in\", \"password\" : \"cityslicka\" }";
 
@@ -20,7 +23,7 @@ public class ReqResAPITest {
                 .contentType(JSON)
                 .body(authData)
                 .when()
-                .post("https://reqres.in/api/login")
+                .post("/login")
                 .then()
                 .log().status()
                 .log().body()
@@ -39,7 +42,7 @@ public class ReqResAPITest {
                 .contentType(JSON)
                 .body(authData)
                 .when()
-                .post("https://reqres.in/api/login")
+                .post("/login")
                 .then()
                 .log().status()
                 .log().body()
@@ -61,7 +64,7 @@ public class ReqResAPITest {
                 .contentType(JSON)
                 .body(createdUser)
                 .when()
-                .post("https://reqres.in/api/users")
+                .post("/users")
                 .then()
                 .log().status()
                 .log().body()
@@ -85,7 +88,7 @@ public class ReqResAPITest {
                 .contentType(JSON)
                 .body(deletedUser)
                 .when()
-                .delete("https://reqres.in/api/users/2")
+                .delete("/users/2")
                 .then()
                 .log().status()
                 .log().body()
@@ -101,7 +104,7 @@ public class ReqResAPITest {
                 .log().method()
                 .log().body()
                 .when()
-                .get("https://reqres.in/api/unknown/2")
+                .get("/unknown/2")
                 .then()
                 .log().status()
                 .log().body()
@@ -110,6 +113,7 @@ public class ReqResAPITest {
                 .body("data.year", is(2001));
 
     }
+
     @Test
     void singleResourceNotFound() {
 
@@ -118,7 +122,7 @@ public class ReqResAPITest {
                 .log().method()
                 .log().body()
                 .when()
-                .get("https://reqres.in/api/unknown/23")
+                .get("/unknown/23")
                 .then()
                 .log().status()
                 .log().body()
@@ -126,6 +130,7 @@ public class ReqResAPITest {
 
 
     }
+
     @Test
     void userUpdate() {
         String createdUser = "{\n" +
@@ -140,7 +145,7 @@ public class ReqResAPITest {
                 .contentType(JSON)
                 .body(createdUser)
                 .when()
-                .put("https://reqres.in/api/users/2")
+                .put("/users/2")
                 .then()
                 .log().status()
                 .log().body()
@@ -149,10 +154,5 @@ public class ReqResAPITest {
                 .body("job", is("Assassin"))
                 .body("updatedAt", notNullValue());
     }
-
-
-
-
-
 
 }
