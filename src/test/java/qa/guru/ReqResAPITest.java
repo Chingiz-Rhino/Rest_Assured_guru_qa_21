@@ -3,20 +3,26 @@ package qa.guru;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import qa.guru.base.TestBase;
+import qa.guru.models.LoginBodyModel;
+import qa.guru.models.LoginResponseModel;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ReqResAPITest extends TestBase {
 
     @Test
     @DisplayName("Successful authorization")
-    void successfulAuth() {
-        String authData = "{ \"email\" :  \"eve.holt@reqres.in\", \"password\" : \"cityslicka\" }";
+    void successfulAuthTest() {
 
-        given()
+        LoginBodyModel authData = new LoginBodyModel();
+        authData.setEmail("eve.holt@reqres.in");
+        authData.setPassword("cityslicka");
+
+        LoginResponseModel response = given()
                 .log().uri()
                 .log().method()
                 .log().body()
@@ -28,14 +34,17 @@ public class ReqResAPITest extends TestBase {
                 .log().status()
                 .log().body()
                 .statusCode(200)
-                .body("token", is("QpwL5tke4Pnpja7X4"));
+                .extract().as(LoginResponseModel.class);
+
+        assertEquals("QpwL5tke4Pnpja7X4", response.getToken());
     }
 
     @Test
     @DisplayName("Unsuccessful authorization")
-    void unsuccessfulAuth() {
-        String authData = "{ \"email\" :  \"eve.holt@reqres.in\", \"password\" : \"\" }";
-
+    void unsuccessfulAuthTest() {
+        LoginBodyModel authData = new LoginBodyModel();
+        authData.setEmail("eve.holt@reqres.in");
+        authData.setPassword("");
         given()
                 .log().uri()
                 .log().method()
@@ -53,7 +62,7 @@ public class ReqResAPITest extends TestBase {
 
     @Test
     @DisplayName("Successful user creation")
-    void successfulUserCreate() {
+    void successfulUserCreateTest() {
         String createdUser = "{\n" +
                 "    \"name\": \"Ezio Auditore\",\n" +
                 "    \"job\": \"Assassin\"\n" +
@@ -78,7 +87,7 @@ public class ReqResAPITest extends TestBase {
 
     @Test
     @DisplayName("Successful user deletion")
-    void successfulUserDelete() {
+    void successfulUserDeleteTest() {
         String deletedUser = "{\n" +
                 "    \"name\": \"Ezio Auditore\",\n" +
                 "    \"job\": \"Assassin\"\n" +
@@ -101,7 +110,7 @@ public class ReqResAPITest extends TestBase {
 
     @Test
     @DisplayName("Single resource")
-    void singleResource() {
+    void singleResourceTest() {
 
         given()
                 .log().uri()
@@ -119,7 +128,7 @@ public class ReqResAPITest extends TestBase {
 
     @Test
     @DisplayName("Can't find single resource")
-    void singleResourceNotFound() {
+    void singleResourceNotFoundTest() {
 
         given()
                 .log().uri()
@@ -136,7 +145,7 @@ public class ReqResAPITest extends TestBase {
 
     @Test
     @DisplayName("User Update")
-    void userUpdate() {
+    void userUpdateTest() {
         String createdUser = "{\n" +
                 "    \"name\": \"Ezio Auditore\",\n" +
                 "    \"job\": \"Assassin\"\n" +
