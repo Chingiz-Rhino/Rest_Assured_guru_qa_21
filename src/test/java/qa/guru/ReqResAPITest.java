@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.notNullValue;
 public class ReqResAPITest extends TestBase {
 
     @Test
-    @DisplayName("")
+    @DisplayName("Successful authorization")
     void successfulAuth() {
         String authData = "{ \"email\" :  \"eve.holt@reqres.in\", \"password\" : \"cityslicka\" }";
 
@@ -32,6 +32,7 @@ public class ReqResAPITest extends TestBase {
     }
 
     @Test
+    @DisplayName("Unsuccessful authorization")
     void unsuccessfulAuth() {
         String authData = "{ \"email\" :  \"eve.holt@reqres.in\", \"password\" : \"\" }";
 
@@ -51,6 +52,7 @@ public class ReqResAPITest extends TestBase {
     }
 
     @Test
+    @DisplayName("Successful user creation")
     void successfulUserCreate() {
         String createdUser = "{\n" +
                 "    \"name\": \"Ezio Auditore\",\n" +
@@ -75,6 +77,7 @@ public class ReqResAPITest extends TestBase {
     }
 
     @Test
+    @DisplayName("Successful user deletion")
     void successfulUserDelete() {
         String deletedUser = "{\n" +
                 "    \"name\": \"Ezio Auditore\",\n" +
@@ -97,6 +100,7 @@ public class ReqResAPITest extends TestBase {
     }
 
     @Test
+    @DisplayName("Single resource")
     void singleResource() {
 
         given()
@@ -111,10 +115,10 @@ public class ReqResAPITest extends TestBase {
                 .statusCode(200)
                 .body("data.name", is("fuchsia rose"))
                 .body("data.year", is(2001));
-
     }
 
     @Test
+    @DisplayName("Can't find single resource")
     void singleResourceNotFound() {
 
         given()
@@ -128,10 +132,10 @@ public class ReqResAPITest extends TestBase {
                 .log().body()
                 .statusCode(404);
 
-
     }
 
     @Test
+    @DisplayName("User Update")
     void userUpdate() {
         String createdUser = "{\n" +
                 "    \"name\": \"Ezio Auditore\",\n" +
