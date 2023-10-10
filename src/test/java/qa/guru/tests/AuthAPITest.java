@@ -1,89 +1,63 @@
-package qa.guru;
+package qa.guru.tests;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import qa.guru.base.TestBase;
-import qa.guru.models.LoginBodyModel;
-import qa.guru.models.LoginResponseModel;
+import qa.guru.models.AuthBodyModel;
+import qa.guru.models.AuthResponseModel;
+import qa.guru.models.AuthErrorModel;
 
+import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static qa.guru.spec.AuthSpec.*;
 
-public class ReqResAPITest extends TestBase {
+public class AuthAPITest {
 
     @Test
-    @DisplayName("Successful authorization")
+    @DisplayName("Успешная авторизация")
     void successfulAuthTest() {
 
-        LoginBodyModel authData = new LoginBodyModel();
+        AuthBodyModel authData = new AuthBodyModel();
         authData.setEmail("eve.holt@reqres.in");
         authData.setPassword("cityslicka");
 
-        LoginResponseModel response = given()
-                .log().uri()
-                .log().method()
-                .log().body()
-                .contentType(JSON)
-                .body(authData)
-                .when()
-                .post("/login")
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(200)
-                .extract().as(LoginResponseModel.class);
+        AuthResponseModel response = step("Login request",()->
+             given(loginRequestSpec)
+                    .body(authData)
+                    .when()
+                    .post("/login")
+                    .then()
+                    .spec(loginResponseSpec)
+                    .extract().as(AuthResponseModel.class));
+    step("Verify response", ()->
+        assertEquals("QpwL5tke4Pnpja7X4", response.getToken()));
 
-        assertEquals("QpwL5tke4Pnpja7X4", response.getToken());
+
     }
 
     @Test
-    @DisplayName("Unsuccessful authorization")
+    @DisplayName("Пороверка ошибки авторизации, при отсутствии пароля")
     void unsuccessfulAuthTest() {
-        LoginBodyModel authData = new LoginBodyModel();
+        AuthBodyModel authData = new AuthBodyModel();
         authData.setEmail("eve.holt@reqres.in");
         authData.setPassword("");
-        given()
-                .log().uri()
-                .log().method()
-                .log().body()
-                .contentType(JSON)
+
+        AuthErrorModel response = step("Make missing password request",()->
+        given(loginRequestSpec)
                 .body(authData)
                 .when()
                 .post("/login")
                 .then()
-                .log().status()
-                .log().body()
-                .statusCode(400)
-                .body("error", is("Missing password"));
+                .spec(missingPasswordResponseSpec)
+                .extract().as(AuthErrorModel.class));
+
+        step("Verify response", ()->
+                assertEquals("Missing password", response.getError()));
     }
 
-    @Test
-    @DisplayName("Successful user creation")
-    void successfulUserCreateTest() {
-        String createdUser = "{\n" +
-                "    \"name\": \"Ezio Auditore\",\n" +
-                "    \"job\": \"Assassin\"\n" +
-                "}";
-
-        given()
-                .log().uri()
-                .log().method()
-                .log().body()
-                .contentType(JSON)
-                .body(createdUser)
-                .when()
-                .post("/users")
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(201)
-                .body("name", is("Ezio Auditore"))
-                .body("job", is("Assassin"))
-                .body("id", notNullValue());
-    }
 
     @Test
     @DisplayName("Successful user deletion")
