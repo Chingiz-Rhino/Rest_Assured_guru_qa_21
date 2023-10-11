@@ -10,8 +10,8 @@ import static io.restassured.filter.log.LogDetail.STATUS;
 import static io.restassured.http.ContentType.JSON;
 import static qa.guru.helpers.CustomAllureListener.withCustomTemplates;
 
-public class CreateUserSpec {
-    public static RequestSpecification createUserRequestSpec = with()
+public class DeleteUserSpec {
+    public static RequestSpecification deleteUserRequestSpec = with()
             .filter(withCustomTemplates())
             .log().uri()
             .log().method()
@@ -20,10 +20,9 @@ public class CreateUserSpec {
             .baseUri("https://reqres.in")
             .basePath("/api");
 
-    public static ResponseSpecification createUserResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification deleteUserResponseSpec = new ResponseSpecBuilder()
             .log(STATUS)
             .log(BODY)
-            .expectStatusCode(201)
+            .expectStatusCode(204)
             .build();
-
 }

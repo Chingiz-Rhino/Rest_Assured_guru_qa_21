@@ -3,27 +3,27 @@ package qa.guru.spec;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.with;
+
 import static io.restassured.filter.log.LogDetail.BODY;
 import static io.restassured.filter.log.LogDetail.STATUS;
-import static io.restassured.http.ContentType.JSON;
 import static qa.guru.helpers.CustomAllureListener.withCustomTemplates;
 
-public class CreateUserSpec {
-    public static RequestSpecification createUserRequestSpec = with()
+public class ListUsersSpec {
+
+    public static RequestSpecification listUserRequestSpec = with()
             .filter(withCustomTemplates())
             .log().uri()
             .log().method()
-            .log().body()
-            .contentType(JSON)
             .baseUri("https://reqres.in")
             .basePath("/api");
 
-    public static ResponseSpecification createUserResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification listUserResponseSpec = new ResponseSpecBuilder()
             .log(STATUS)
             .log(BODY)
-            .expectStatusCode(201)
+            .expectStatusCode(200)
             .build();
-
 }

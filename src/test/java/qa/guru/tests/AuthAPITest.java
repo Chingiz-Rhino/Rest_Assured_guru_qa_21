@@ -8,9 +8,7 @@ import qa.guru.models.AuthErrorModel;
 
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
-import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static qa.guru.spec.AuthSpec.*;
 
@@ -59,28 +57,7 @@ public class AuthAPITest {
     }
 
 
-    @Test
-    @DisplayName("Successful user deletion")
-    void successfulUserDeleteTest() {
-        String deletedUser = "{\n" +
-                "    \"name\": \"Ezio Auditore\",\n" +
-                "    \"job\": \"Assassin\"\n" +
-                "}";
 
-        given()
-                .log().uri()
-                .log().method()
-                .log().body()
-                .contentType(JSON)
-                .body(deletedUser)
-                .when()
-                .delete("/users/2")
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(204);
-
-    }
 
     @Test
     @DisplayName("Single resource")
@@ -117,29 +94,5 @@ public class AuthAPITest {
 
     }
 
-    @Test
-    @DisplayName("User Update")
-    void userUpdateTest() {
-        String createdUser = "{\n" +
-                "    \"name\": \"Ezio Auditore\",\n" +
-                "    \"job\": \"Assassin\"\n" +
-                "}";
-
-        given()
-                .log().uri()
-                .log().method()
-                .log().body()
-                .contentType(JSON)
-                .body(createdUser)
-                .when()
-                .put("/users/2")
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(200)
-                .body("name", is("Ezio Auditore"))
-                .body("job", is("Assassin"))
-                .body("updatedAt", notNullValue());
-    }
 
 }
