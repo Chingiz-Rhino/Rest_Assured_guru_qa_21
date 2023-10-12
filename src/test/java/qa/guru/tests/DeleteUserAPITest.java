@@ -12,7 +12,7 @@ import static qa.guru.spec.DeleteUserSpec.deleteUserResponseSpec;
 public class DeleteUserAPITest {
 
     @Test
-    @DisplayName("Успешное удаление пользователя")
+    @DisplayName("Successful user deletion")
     void successfulUserDeleteTest() {
         DeleteUserBodyModel deleteUser = new DeleteUserBodyModel();
 

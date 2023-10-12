@@ -3,6 +3,6 @@ package qa.guru.models;
 import lombok.Data;
 
 @Data
-public class ListUsersSupportResponseModel {
+public class SingleResourceSupportResponseModel {
     String url, text;
 }

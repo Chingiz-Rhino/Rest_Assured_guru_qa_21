@@ -13,7 +13,7 @@ import static qa.guru.spec.CreateUserSpec.createUserResponseSpec;
 
 public class CreateUserAPITest {
     @Test
-    @DisplayName("Успешное создание пользователя")
+    @DisplayName("Successful user creation")
     void successfulUserCreateTest() {
 
         CreateUserBodyModel createdUser = new CreateUserBodyModel();
@@ -38,7 +38,7 @@ public class CreateUserAPITest {
     }
 
     @Test
-    @DisplayName("Успешное создание пользователя без Name")
+    @DisplayName("Successfully creating a user without Name")
     void successfulUserCreateWithoutNameTest() {
 
         CreateUserBodyModel createdUser = new CreateUserBodyModel();
@@ -61,7 +61,7 @@ public class CreateUserAPITest {
         });
     }
     @Test
-    @DisplayName("Успешное создание пользователя без Job")
+    @DisplayName("Successfully creating a user without Job")
     void successfulUserCreateWithoutJobTest() {
 
         CreateUserBodyModel createdUser = new CreateUserBodyModel();
@@ -85,7 +85,7 @@ public class CreateUserAPITest {
     }
 
     @Test
-    @DisplayName("Успешное создание пользователя без Name и Job")
+    @DisplayName("Successfully creating a user without Name and Job")
     void successfulUserCreateWithoutNameAndJobTest() {
 
         CreateUserBodyModel createdUser = new CreateUserBodyModel();
