@@ -45,12 +45,13 @@ public class SingleResourceAPITest {
     @Test
     @DisplayName("Can't find single resource")
     void singleResourceNotFoundTest() {
-
+    step("Can't find single resource request",()->{
         given(singleResourceRequestSpec)
                 .when()
                 .get("/unknown/23")
                 .then()
                 .spec(singleResource404ResponseSpec);
+    });
 
     }
 }
