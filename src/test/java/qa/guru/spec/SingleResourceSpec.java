@@ -22,6 +22,11 @@ public class SingleResourceSpec {
             .log(BODY)
             .expectStatusCode(200)
             .build();
+    public static ResponseSpecification singleResource404ResponseSpec = new ResponseSpecBuilder()
+            .log(STATUS)
+            .log(BODY)
+            .expectStatusCode(404)
+            .build();
 
 
 

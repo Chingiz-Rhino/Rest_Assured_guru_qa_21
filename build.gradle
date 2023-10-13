@@ -43,6 +43,6 @@ tasks.withType(Test) {
 }
 
 
-test {
+tasks.withType(Test) {
     useJUnitPlatform()
 }

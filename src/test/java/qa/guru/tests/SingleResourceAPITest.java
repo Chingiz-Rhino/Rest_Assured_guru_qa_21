@@ -9,8 +9,7 @@ import qa.guru.models.SingleResourceSupportResponseModel;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static qa.guru.spec.SingleResourceSpec.singleResourceRequestSpec;
-import static qa.guru.spec.SingleResourceSpec.singleResourceResponseSpec;
+import static qa.guru.spec.SingleResourceSpec.*;
 
 public class SingleResourceAPITest {
     @Test
@@ -47,16 +46,11 @@ public class SingleResourceAPITest {
     @DisplayName("Can't find single resource")
     void singleResourceNotFoundTest() {
 
-        given()
-                .log().uri()
-                .log().method()
-                .log().body()
+        given(singleResourceRequestSpec)
                 .when()
                 .get("/unknown/23")
                 .then()
-                .log().status()
-                .log().body()
-                .statusCode(404);
+                .spec(singleResource404ResponseSpec);
 
     }
 }
